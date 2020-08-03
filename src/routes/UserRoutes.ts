@@ -6,5 +6,6 @@ const UserRouter = express();
 
 
 UserRouter.post('/user',userController.create);
+UserRouter.post('/user/address',userController.createAddress);
 
 export {UserRouter};

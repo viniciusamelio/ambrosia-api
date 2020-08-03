@@ -7,13 +7,14 @@ import { v4 as uuid } from 'uuid';
 class CreateUserAction{
     userRepository: UserRepository;
     
-    async create(req:Request){
+    async create(req:Request):Promise<any>{
         try {
             const {name, email, birthdate, password} = req.body;
             const user = new User();
             user.name = name;
             user.email = email;
             user.birthdate = new Date(birthdate);
+            user.role = "user";
             await bcrypt.hash(password,10,(error,result)=>{
                 if(error) throw error;
                 user.password = result;
