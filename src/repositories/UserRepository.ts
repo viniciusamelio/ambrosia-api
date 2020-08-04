@@ -2,8 +2,6 @@ import { createConnection, getConnectionManager } from "typeorm";
 
 import { User } from "../entity/User";
 import { Address } from "../entity/Address";
-import { isNullOrUndefined } from "util";
-import { userInfo } from "os";
 
 class UserRepository {
     async save(user: User): Promise<User> {

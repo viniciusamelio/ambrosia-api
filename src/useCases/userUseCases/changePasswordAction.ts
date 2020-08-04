@@ -2,7 +2,7 @@ import { UserRepository } from "../../repositories/UserRepository"
 import {Request} from 'express';
 const bcrypt = require('bcrypt');
 class ChangeUserPasswordAction{
-    userRepository: UserRepository;
+    constructor(private userRepository: UserRepository){}
     
     async index(req:Request):Promise<any>{
         try {

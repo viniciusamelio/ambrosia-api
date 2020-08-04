@@ -1,7 +1,6 @@
 import { UserRepository } from "../../repositories/UserRepository"
 import { Request } from 'express';
 import { Address } from "../../entity/Address";
-import { User } from "../../entity/User";
 
 class UpdateUserAddressAction {
 

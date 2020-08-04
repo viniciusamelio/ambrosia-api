@@ -20,10 +20,13 @@ export class Order {
     items : JSON[];
 
     @Column({length:20})
-    status:string;
+    status: string;
 
     @Column({type: 'float'})
     amount: number;
+
+    @Column({name: "contact_email"})
+    contactEmail: string;
 
 
 }

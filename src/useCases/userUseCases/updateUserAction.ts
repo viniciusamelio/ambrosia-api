@@ -2,9 +2,9 @@ import { UserRepository } from "../../repositories/UserRepository"
 import {Request} from 'express';
 import { isNullOrUndefined } from "util";
 class UpdateUserAction{
-    userRepository: UserRepository;
+    constructor(private userRepository: UserRepository){}
     
-    async index(req:Request){
+    async index(req:Request): Promise<any>{
         try {
             const {name, email, birthdate, role = "user"} = req.body;
             const user = await this.userRepository.findByEmail(email);
