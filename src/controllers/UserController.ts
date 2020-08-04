@@ -5,13 +5,12 @@ import { CreateAddressAction } from '../useCases/userUseCases/createAddressActio
 
 const userRepository = new UserRepository();
 
-const createUserAction = new CreateUserAction();
+const createUserAction = new CreateUserAction(userRepository);
 const createAddressAction = new CreateAddressAction(userRepository);
-createUserAction.userRepository = userRepository;
 
 class UserController{
     async create(req:Request,res:Response){
-        const result = await createUserAction.create(req);
+        const result = await createUserAction.index(req);
         if(result.errno){
             return res.status(400).json({error: result.name}).send();
         }
@@ -19,7 +18,7 @@ class UserController{
     }
 
     async createAddress(req:Request,res:Response){
-        const result = await createAddressAction.create(req);
+        const result = await createAddressAction.index(req);
         if(result.errno){
             return res.status(400).json({error: result.name}).send();
         }

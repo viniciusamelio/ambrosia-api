@@ -2,20 +2,16 @@ import { UserRepository } from "../../repositories/UserRepository"
 import { Request } from 'express';
 import { Address } from "../../entity/Address";
 import { User } from "../../entity/User";
-import { v4 as uuid } from 'uuid';
 
-class CreateAddressAction {
+class UpdateUserAddressAction {
 
     constructor(private userRepository: UserRepository) { }
 
     async index(req:Request):Promise<any>{
         try {
-            const {userEmail, title, street, number, neighborhood, city, reference, zipCode, state} = req.body;
-            const queryUser = new User();
-            queryUser.email = userEmail;
-            const user = await this.userRepository.findByEmail(queryUser);
+            const {userId, id , title, street, number, neighborhood, city, reference, zipCode, state} = req.body;
             const address = new Address();
-            address.id = uuid();
+            address.id = id;
             address.city = city;            
             address.title = title;
             address.street = street;
@@ -25,7 +21,7 @@ class CreateAddressAction {
             address.reference = reference;
             address.zipCode = zipCode;
             
-            const savedUser = await this.userRepository.storeAddress(user,address);
+            const savedUser = await this.userRepository.updateAddress(userId,address);
 
             return savedUser;
 
@@ -36,4 +32,4 @@ class CreateAddressAction {
 
 }
 
-export { CreateAddressAction }
+export { UpdateUserAddressAction }

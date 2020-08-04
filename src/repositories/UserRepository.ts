@@ -6,7 +6,7 @@ import { isNullOrUndefined } from "util";
 import { userInfo } from "os";
 
 class UserRepository {
-    async store(user: User): Promise<User> {
+    async save(user: User): Promise<User> {
         try {
             return createConnection().then(async connection => {
                 const userRepository = connection.getRepository(User);
@@ -19,7 +19,20 @@ class UserRepository {
                 return error;
             });
         } catch (error) {
-            console.log(error)
+            return error;
+        }
+    }
+
+    async delete(user: User): Promise<void> {
+        try {
+            return createConnection().then(async connection => {
+                const userRepository = connection.getRepository(User);
+                await userRepository.delete(user);
+            }).catch((error) => {
+                getConnectionManager().get().close();
+                return error;
+            })
+        } catch (error) {
             return error;
         }
     }
@@ -44,10 +57,41 @@ class UserRepository {
                 connection.close();
                 return savedUser;
             }).catch((error) => {
-                console.log(error)
                 getConnectionManager().get().close();
                 return error;
             });
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async updateAddress(userId: String, address: Address): Promise<User> {
+        try {
+            return createConnection().then(async connection => {
+                const addressRepository = connection.getRepository(Address);
+                await addressRepository.save(address);
+                const userRepository = connection.getRepository(User);
+                const user = await userRepository.findOne({ relations: ["addresses"], where: { id: userId } });
+                connection.close();
+                return user;
+            }).catch((error) => {
+                getConnectionManager().get().close();
+                return error;
+            });
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async deleteAddress(addressId: string): Promise<User> {
+        try {
+            return createConnection().then(async connection => {
+                const addressRepository = connection.getRepository(Address);
+                await addressRepository.delete({ id: addressId });
+            }).catch((error) => {
+                getConnectionManager().get().close();
+                return error;
+            })
         } catch (error) {
             return error;
         }
