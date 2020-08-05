@@ -55,7 +55,7 @@ class UserController {
     async updateAddress(req: Request, res: Response) {
         const result = await updateAddressAction.index(req);
         if (result.error) { return res.status(400).json({ error: result.error }).send(); }
-        return res.status(201).json(result);
+        return res.status(201).json(result.addresses);
     }
 
 }
