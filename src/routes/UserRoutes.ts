@@ -7,6 +7,7 @@ const UserRouter = express.Router();
 
 UserRouter.post('/user',userController.create);
 UserRouter.post('/user/address',userController.createAddress);
+UserRouter.post('/login',userController.login);
 
 UserRouter.put('/user', userController.update);
 UserRouter.put('/user/address', userController.updateAddress);

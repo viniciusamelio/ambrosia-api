@@ -16,8 +16,8 @@ export class Order {
     @JoinColumn()
     user: User;
 
-    @Column("json",{array:true})
-    items : JSON[];
+    @Column({type: "longtext"})
+    items : string;
 
     @Column({length:20})
     status: string;
