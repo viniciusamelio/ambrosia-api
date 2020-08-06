@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn, OneToOne, JoinColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn, OneToOne, JoinColumn, OneToMany, ManyToOne} from "typeorm";
 import { ProductCategory } from "./ProductCategory";
 
 @Entity()
@@ -19,7 +19,7 @@ export class Product{
     @Column({type: 'float'})
     price: number;
 
-    @OneToOne(type => ProductCategory)
+    @ManyToOne(type => ProductCategory, category=>category.id)
     @JoinColumn({name:"product_category_id"})
     category: ProductCategory;
 
