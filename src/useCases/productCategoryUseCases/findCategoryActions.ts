@@ -8,9 +8,9 @@ class FindCategoryAction {
     async index(request: Request) {
         try {
             const { id } = request.query;
-            if (id) {
+            if (id) {                
                 const foundCategory = await this.categoryRepository.find(id.toString());
-                if (!isNullOrUndefined(foundCategory)) return { error: "Categoria não encontrada" }
+                if (isNullOrUndefined(foundCategory)) return { error: "Categoria não encontrada" }
                 return foundCategory;
             }
             const categories = await this.categoryRepository.findAll();

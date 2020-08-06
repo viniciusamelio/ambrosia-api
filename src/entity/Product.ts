@@ -1,7 +1,8 @@
 import {Entity, Column, PrimaryColumn, OneToOne, JoinColumn} from "typeorm";
+import { ProductCategory } from "./ProductCategory";
 
 @Entity()
-export class ProductCategory {
+export class Product{
 
     @PrimaryColumn({unique:true})
     id: string;

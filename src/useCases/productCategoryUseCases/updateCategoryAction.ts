@@ -11,7 +11,7 @@ class UpdateCategoryAction{
             const {id,name,description} = request.body;
                         
             const foundCategory = await this.categoryRepository.find(id);
-            if(! isNullOrUndefined(foundCategory)) return {error: "Categoria não encontrada"}
+            if(isNullOrUndefined(foundCategory)) return {error: "Categoria não encontrada"}
 
             const category = new ProductCategory();
             category.name = name;
