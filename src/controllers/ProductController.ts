@@ -8,6 +8,7 @@ import { DeleteProductAction } from "../useCases/productUseCases/deleteProductAc
 import { ListProductAction } from "../useCases/productUseCases/listProductAction";
 import { FindProductAction } from "../useCases/productUseCases/findProductAction";
 import { FindProductByCategoryAction } from "../useCases/productUseCases/findProductByCategoryAction";
+import { getProductImagePath } from "../utils/getProductImagePath";
 
 const productRepository = new ProductRepository();
 const categoryRepository = new CategoryRepository();
@@ -24,24 +25,28 @@ class ProductController {
     async create(req: Request, res: Response) {
         const result = await createProductAction.index(req);
         if (result.error) return res.status(400).json({ error: result.error }).send();
+        result.image = getProductImagePath(req,result.image);
         return res.status(201).json(result).send();
     }
 
     async find(req: Request, res: Response) {
         const result = await findProductAction.index(req);
         if (result.error) return res.status(400).json({ error: result.error }).send();
+        result.image = getProductImagePath(req,result.image);
         return res.status(200).json(result).send();
     }
 
     async findByCategory(req: Request, res: Response) {
         const result = await findProductByCategoryAction.index(req);
         if (result.error) return res.status(400).json({ error: result.error }).send();
+        result.image = getProductImagePath(req,result.image);
         return res.status(200).json(result).send();
     }
 
     async list(req: Request, res: Response) {
         const result = await listProductAction.index();
         if (result.error) return res.status(400).json({ error: result.error }).send();
+        result.image = getProductImagePath(req,result.image);
         return res.status(200).json(result).send();
     }
 
@@ -49,12 +54,14 @@ class ProductController {
     async update(req: Request, res: Response) {
         const result = await updateProductAction.index(req);
         if (result.error) return res.status(400).json({ error: result.error }).send();
+        result.image = getProductImagePath(req,result.image);
         return res.status(200).json(result).send();
     }
 
     async changePicture(req: Request, res: Response) {
         const result = await changePicutreProductAction.index(req);
         if (result.error) return res.status(400).json({ error: result.error }).send();
+        result.image = getProductImagePath(req,result.image);
         return res.status(200).json(result).send();
     }
 
