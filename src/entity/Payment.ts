@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn, OneToOne, JoinColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn, OneToOne, JoinColumn, ManyToOne} from "typeorm";
 import { PaymentMethod } from "./PaymentMethod";
 import { Order } from "./Order";
 
@@ -8,7 +8,7 @@ export class Payment {
     @PrimaryColumn({unique:true})
     id: string;
 
-    @OneToOne(type => PaymentMethod)
+    @ManyToOne(type => PaymentMethod, paymentMethod=>paymentMethod.id)
     @JoinColumn({name: "payment_method_id"})
     paymentMethod: PaymentMethod;
 
