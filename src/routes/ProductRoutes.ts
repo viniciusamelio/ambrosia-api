@@ -9,10 +9,11 @@ const productController = new ProductController();
 const ProductRouter = express.Router();
 
 ProductRouter.get('/products',productController.list);
+ProductRouter.get('/products/:category_id',productController.findByCategory);
 ProductRouter.get('/product/:id',productController.find);
 ProductRouter.post('/product',multer(multerImageConfig).single('file'),productController.create);
 ProductRouter.patch('/product/image',multer(multerImageConfig).single('file'),productController.changePicture);
 ProductRouter.put('/product', productController.update);
-ProductRouter.delete('/product', productController.delete);
+ProductRouter.delete('/product/:id', productController.delete);
 
 export {ProductRouter};

@@ -1,16 +1,16 @@
 import {Request} from 'express';
 import { ProductRepository } from '../../repositories/ProductRepository';
 
-class FindProductAction{
+class FindProductByCategoryAction{
     constructor(private productRepository: ProductRepository){}
 
     async index(request:Request) : Promise<any>{
         try {
-            const { id } = request.params;
+            const { category_id } = request.params;
 
-            const product = await this.productRepository.find(id);                        
+            const products = await this.productRepository.findByCategory(category_id);                        
 
-            return product;
+            return products;
             
         } catch (error) {
             return {error: error.message};
@@ -19,4 +19,4 @@ class FindProductAction{
 
 }
 
-export {FindProductAction}
+export {FindProductByCategoryAction}

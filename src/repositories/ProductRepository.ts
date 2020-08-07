@@ -3,16 +3,16 @@ import { Product } from "../entity/Product";
 
 
 
-class ProductRepository{
-    async save(product: Product){
+class ProductRepository {
+    async save(product: Product) {
         try {
-            return createConnection().then( async (connection)=>{
+            return createConnection().then(async (connection) => {
                 const productRepository = connection.getRepository(Product);
                 await productRepository.save(product);
-                const savedProduct = await productRepository.findOne({id: product.id});
+                const savedProduct = await productRepository.findOne({ id: product.id });
                 connection.close();
                 return savedProduct;
-            }).catch((error)=>{
+            }).catch((error) => {
                 getConnectionManager().get().close();
                 return error;
             });
@@ -21,21 +21,16 @@ class ProductRepository{
         }
     }
 
-    async find(productId: string, categoryId:String = null){
+    async find(productId: string) {
         try {
-            return createConnection().then( async (connection)=>{
+            return createConnection().then(async (connection) => {
                 const productRepository = connection.getRepository(Product);
-                let product : Product[];
 
-                if(categoryId){
-                    product = await productRepository.find({category: {id: `${categoryId}`}});
-                }else{
-                    product = await productRepository.find({id: productId});
-                }
-                
+                const product = await productRepository.findOne({ relations: ["category"], where: { id: productId } });
+
                 connection.close();
                 return product;
-            }).catch((error)=>{
+            }).catch((error) => {
                 getConnectionManager().get().close();
                 return error;
             });
@@ -43,16 +38,17 @@ class ProductRepository{
             return error;
         }
     }
-    
 
-    async findAll(){
+    async findByCategory(categoryId: string) {
         try {
-            return createConnection().then( async (connection)=>{
+            return createConnection().then(async (connection) => {
                 const productRepository = connection.getRepository(Product);
-                const products = await productRepository.find();
+
+                const products = await productRepository.find({ relations: ["category"], where: { category: { id: categoryId } } });
+
                 connection.close();
                 return products;
-            }).catch((error)=>{
+            }).catch((error) => {
                 getConnectionManager().get().close();
                 return error;
             });
@@ -61,14 +57,31 @@ class ProductRepository{
         }
     }
 
-    async delete(productId:string){
+
+    async findAll() {
         try {
-            return createConnection().then( async (connection)=>{
+            return createConnection().then(async (connection) => {
                 const productRepository = connection.getRepository(Product);
-                await productRepository.delete({id: productId});
+                const products = await productRepository.find({relations: ['category']});
                 connection.close();
-                return {message: "Produto removido com sucesso"};
-            }).catch((error)=>{
+                return products;
+            }).catch((error) => {
+                getConnectionManager().get().close();
+                return error;
+            });
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async delete(productId: string) {
+        try {
+            return createConnection().then(async (connection) => {
+                const productRepository = connection.getRepository(Product);
+                await productRepository.delete({ id: productId });
+                connection.close();
+                return { message: "Produto removido com sucesso" };
+            }).catch((error) => {
                 getConnectionManager().get().close();
                 return error;
             });
@@ -79,4 +92,4 @@ class ProductRepository{
 }
 
 
-export {ProductRepository}
+export { ProductRepository }

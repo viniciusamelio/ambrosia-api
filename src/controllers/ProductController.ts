@@ -7,6 +7,7 @@ import { ChangePictureProductAction } from "../useCases/productUseCases/changePi
 import { DeleteProductAction } from "../useCases/productUseCases/deleteProductAction";
 import { ListProductAction } from "../useCases/productUseCases/listProductAction";
 import { FindProductAction } from "../useCases/productUseCases/findProductAction";
+import { FindProductByCategoryAction } from "../useCases/productUseCases/findProductByCategoryAction";
 
 const productRepository = new ProductRepository();
 const categoryRepository = new CategoryRepository();
@@ -17,7 +18,7 @@ const changePicutreProductAction = new ChangePictureProductAction(productReposit
 const deleteProductAction = new DeleteProductAction(productRepository);
 const listProductAction = new ListProductAction(productRepository);
 const findProductAction = new FindProductAction(productRepository);
-
+const findProductByCategoryAction = new FindProductByCategoryAction(productRepository);
 
 class ProductController {
     async create(req: Request, res: Response) {
@@ -28,6 +29,12 @@ class ProductController {
 
     async find(req: Request, res: Response) {
         const result = await findProductAction.index(req);
+        if (result.error) return res.status(400).json({ error: result.error }).send();
+        return res.status(200).json(result).send();
+    }
+
+    async findByCategory(req: Request, res: Response) {
+        const result = await findProductByCategoryAction.index(req);
         if (result.error) return res.status(400).json({ error: result.error }).send();
         return res.status(200).json(result).send();
     }

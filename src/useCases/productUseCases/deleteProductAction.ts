@@ -9,8 +9,8 @@ class DeleteProductAction {
 
     async index(request: Request) {
         try {
-            const { id } = request.body;
-            const product: Product = await this.productRepository.find(id)[0];
+            const { id } = request.params;
+            const product: Product = await this.productRepository.find(id);
             const imagePath = resolve(__dirname, '..', '..', '..', 'public', 'uploads', 'products') + sep + product.image;
             // Deletando a imagem do produto
             fs.unlinkSync(imagePath);
