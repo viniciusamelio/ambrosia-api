@@ -13,7 +13,7 @@ PaymentMethodRouter.post('/paymentmethods', paymentMethodController.create);
 
 PaymentMethodRouter.put('/paymentmethods', paymentMethodController.update);
 
-PaymentMethodRouter.delete('/paymentmethods', paymentMethodController.deelte);
+PaymentMethodRouter.delete('/paymentmethods', paymentMethodController.delete);
 
 
 export { PaymentMethodRouter };

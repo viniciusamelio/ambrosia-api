@@ -13,7 +13,7 @@ class CreateAddressAction {
             const {userEmail, title, street, number, neighborhood, city, reference, zipCode, state} = req.body;
             const queryUser = new User();
             queryUser.email = userEmail;
-            const user = await this.userRepository.findByEmail(queryUser);
+            const user = await this.userRepository.findByEmail(queryUser.email);
             const address = new Address();
             address.id = uuid();
             address.city = city;            

@@ -10,7 +10,7 @@ class ChangeUserPasswordAction{
             const {email, password} = req.body;
             const queryUser = new User();
             queryUser.email = email;
-            const user = await this.userRepository.findByEmail(queryUser);            
+            const user = await this.userRepository.findByEmail(queryUser.email);            
             await bcrypt.hash(password,10,(error,result)=>{
                 if(error) throw error;
                 user.password = result;

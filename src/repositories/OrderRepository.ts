@@ -23,7 +23,7 @@ export class OrderRepository{
         try {
             return createConnection().then(async (connection) => {
                 const orderRepository = connection.getRepository(Order);
-                const order = orderRepository.findOne({id: orderId});
+                const order = await orderRepository.findOne({id: orderId});
                 connection.close();
                 return order;
             }).catch((error) => {
@@ -39,7 +39,7 @@ export class OrderRepository{
         try {
             return createConnection().then(async (connection) => {
                 const orderRepository = connection.getRepository(Order);
-                const order = orderRepository.find({user: {id : userId}});
+                const order = await orderRepository.find({user: {id : userId}});
                 connection.close();
                 return order;
             }).catch((error) => {
@@ -55,7 +55,7 @@ export class OrderRepository{
         try {
             return createConnection().then(async (connection) => {
                 const orderRepository = connection.getRepository(Order);
-                const order = orderRepository.find();
+                const order = await orderRepository.find();
                 connection.close();
                 return order;
             }).catch((error) => {

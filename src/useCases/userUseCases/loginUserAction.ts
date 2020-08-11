@@ -11,7 +11,7 @@ class LoginUserAction {
             const { password, email } = req.body;
             const queryUser = new User();
             queryUser.email = email;
-            const user = await this.userRepository.findByEmail(queryUser);
+            const user = await this.userRepository.findByEmail(queryUser.email);
 
             if (isNullOrUndefined(user)) return { warning: "Usuário e senha inválidos" }
 

@@ -1,8 +1,6 @@
 import {Request} from 'express';
 import { OrderRepository } from '../../repositories/OrderRepository';
 import { Order } from '../../entity/Order';
-import { UserRepository } from '../../repositories/UserRepository';
-
 
 export class FindOrderAction{
     constructor(private orderRepository: OrderRepository){}
@@ -12,10 +10,10 @@ export class FindOrderAction{
             const { userId } = request.params;
             const { orderId } = request.query;
 
-            let orderList : Order[];
+            let orderList : Order[] = [];
 
             if(orderId){
-                const order  = await this.orderRepository.find(userId);
+                const order  = await this.orderRepository.find(orderId.toString());
                 orderList.push(order);
             }else{
                 const orders = await this.orderRepository.findByUser(userId);

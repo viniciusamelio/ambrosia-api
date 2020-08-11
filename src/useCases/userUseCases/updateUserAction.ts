@@ -10,7 +10,7 @@ class UpdateUserAction{
             const {name, email, birthdate, role = "user"} = req.body;
             const queryUser = new User();
             queryUser.email = email;
-            const user = await this.userRepository.findByEmail(queryUser);
+            const user = await this.userRepository.findByEmail(queryUser.email);
 
             if(isNullOrUndefined(user)) return {error:"Usuário não cadastrado"}
             
