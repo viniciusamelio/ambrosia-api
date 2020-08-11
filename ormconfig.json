@@ -1,10 +1,10 @@
 {
    "type": "mysql",
-   "host": "k2pdcy98kpcsweia.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+   "host": "rnr56s6e2uk326pj.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
    "port": 3306,
-   "username": "xl6y2crwpmebt169",
-   "password": "b1x4iujsqz9rwjik",
-   "database": "pfcecoefl4enwx78",
+   "username": "n8v5g3kgl8ktn5vn",
+   "password": "id88sq8wr30udc6r",
+   "database": "yziyp3ndhb7kcitp",
 
    "synchronize": true,
    "logging": false,
