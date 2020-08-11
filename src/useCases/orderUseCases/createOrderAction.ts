@@ -26,8 +26,12 @@ export class CreateOrderAction {
 
             const location = await locationService.getLocation(`${address.street} , ${address.number}, ${address.neighborhood}, ${address.city} - ${address.state}, Brazil ,${address.zipCode}`);
 
-            const distance = getDistance({ latitude: location.lat, longitude: location.lon }, { latitude: '-23.623372', longitude: '-46.3201738' },1000) / 1000;
-            if(distance > parseFloat(process.env.MAX_ACCEPTED_DISTANCE)) return {error: "Endereço fora do raio de cobertura de entrega"};            
+            if(!isNullOrUndefined(location)){
+                const distance = getDistance({ latitude: location.lat, longitude: location.lon }, { latitude: '-23.623372', longitude: '-46.3201738' },1000) / 1000;
+                if(distance > parseFloat(process.env.MAX_ACCEPTED_DISTANCE)) return {error: "Endereço fora do raio de cobertura de entrega"};   
+            }
+
+                     
             
 
             const order = new Order();
