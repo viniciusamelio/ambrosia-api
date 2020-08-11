@@ -1,25 +1,34 @@
-import {Request} from 'express';
+import { Request } from 'express';
+import { getDistance } from 'geolib';
 import { v4 as uuid } from 'uuid';
 import { OrderRepository } from '../../repositories/OrderRepository';
 import { Order } from '../../entity/Order';
 import { UserRepository } from '../../repositories/UserRepository';
 import { isNullOrUndefined } from 'util';
+import { LocationIQService } from '../../services/LocationIQService';
 
+const locationService = new LocationIQService();
 
-export class CreateOrderAction{
-    constructor(private orderRepository: OrderRepository, private userRepository: UserRepository){}
+export class CreateOrderAction {
+    constructor(private orderRepository: OrderRepository, private userRepository: UserRepository) { }
 
-    async index(request:Request){
+    async index(request: Request) {
         try {
-            const { addressId ,userEmail, items, amount, contactEmail } = request.body;
+            const { addressId, userEmail, items, amount, contactEmail } = request.body;
 
             const user = await this.userRepository.findByEmail(userEmail);
 
-            if(isNullOrUndefined(user)) return {error: "Usuário não encontrado"}
+            if (isNullOrUndefined(user)) return { error: "Usuário não encontrado" }
 
             const address = await this.userRepository.findAddress(addressId, user.id);
 
-            if(isNullOrUndefined(address)) return {error: "Endereço não encontrado"}
+            if (isNullOrUndefined(address)) return { error: "Endereço não encontrado" }
+
+            const location = await locationService.getLocation(`${address.street} , ${address.number}, ${address.neighborhood}, ${address.city} - ${address.state}, Brazil ,${address.zipCode}`);
+
+            const distance = getDistance({ latitude: location.lat, longitude: location.lon }, { latitude: '-23.623372', longitude: '-46.3201738' },1000) / 1000;
+            if(distance > parseFloat(process.env.MAX_ACCEPTED_DISTANCE)) return {error: "Endereço fora do raio de cobertura de entrega"};            
+            
 
             const order = new Order();
             order.id = uuid();
@@ -35,7 +44,7 @@ export class CreateOrderAction{
             return result;
 
         } catch (error) {
-            return {error: error.message};
+            return { error: error.message };
         }
     }
 
