@@ -95,11 +95,26 @@ class UserRepository {
         }
     }
 
+    async findAddress(addressId: string, userId: string): Promise<Address> {
+        try {
+            return createConnection().then(async connection => {
+                const addressRepository = connection.getRepository(Address);
+                const address = await addressRepository.findOne({ id: addressId, user: { id: userId } });
+                return address;
+            }).catch((error) => {
+                getConnectionManager().get().close();
+                return error;
+            })
+        } catch (error) {
+            return error;
+        }
+    }
+
     async findByEmail(user: User): Promise<User> {
         try {
             return createConnection().then(async connection => {
                 const userRepository = connection.getRepository(User);
-                const foundUser = await userRepository.findOne({ email: user.email });
+                const foundUser = await userRepository.findOne({ relations: ["addresses"], where: { email: user.email } });
                 connection.close();
                 return foundUser;
             }).catch((error) => {

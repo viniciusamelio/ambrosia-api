@@ -8,6 +8,7 @@ import { UserRouter } from './routes/UserRoutes';
 import { CategoryRouter } from "./routes/CategoryRoutes";
 import { ProductRouter } from "./routes/ProductRoutes";
 import { PaymentMethodRouter } from "./routes/PaymentMethodRoutes";
+import { OrderRouter } from "./routes/OrderRoutes";
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.use(UserRouter);
 app.use(CategoryRouter);
 app.use(ProductRouter);
 app.use(PaymentMethodRouter);
+app.use(OrderRouter);
 
 app.listen(3000);
