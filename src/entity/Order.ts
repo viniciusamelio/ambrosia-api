@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn, OneToOne, JoinColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn, JoinColumn, ManyToOne} from "typeorm";
 import { Address } from "./Address";
 import { User } from "./User";
 
@@ -8,11 +8,11 @@ export class Order {
     @PrimaryColumn({unique:true})
     id: string;
 
-    @OneToOne(type => Address)
+    @ManyToOne(type => Address, address=>address.id)
     @JoinColumn()
     address: Address;
 
-    @OneToOne(type => User)
+    @ManyToOne(type => User, user=>user.id)
     @JoinColumn()
     user: User;
 
