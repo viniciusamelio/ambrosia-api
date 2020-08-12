@@ -40,9 +40,9 @@ class PaymentMethodRepository {
         try {
             return createConnection().then(async (connection) => {
                 const methodRepository = connection.getRepository(PaymentMethod);
-                const savedMethod = await methodRepository.delete({ id: paymentMethodId });
+                await methodRepository.delete({ id: paymentMethodId });
                 connection.close();
-                return savedMethod;
+                return {message: "Método de pagamento removido com sucesso"};
             }).catch((error) => {
                 getConnectionManager().get().close();
                 return error;

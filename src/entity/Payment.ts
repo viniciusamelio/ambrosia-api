@@ -19,4 +19,7 @@ export class Payment {
     @Column({length:20})
     status:string;
 
+    @Column({type:'float'})
+    amount:number;
+
 }

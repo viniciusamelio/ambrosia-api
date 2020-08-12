@@ -26,13 +26,10 @@ export class CreateOrderAction {
 
             const location = await locationService.getLocation(`${address.street} , ${address.number}, ${address.neighborhood}, ${address.city} - ${address.state}, Brazil ,${address.zipCode}`);
 
-            if(!isNullOrUndefined(location)){
-                const distance = getDistance({ latitude: location.lat, longitude: location.lon }, { latitude: '-23.623372', longitude: '-46.3201738' },1000) / 1000;
-                if(distance > parseFloat(process.env.MAX_ACCEPTED_DISTANCE)) return {error: "Endereço fora do raio de cobertura de entrega"};   
+            if (!isNullOrUndefined(location)) {
+                const distance = getDistance({ latitude: location.lat, longitude: location.lon }, { latitude: process.env.LATITUDE, longitude: process.env.LONGITUDE }, 1000) / 1000;
+                if (distance > parseFloat(process.env.MAX_ACCEPTED_DISTANCE)) return { error: "Endereço fora do raio de cobertura de entrega" };
             }
-
-                     
-            
 
             const order = new Order();
             order.id = uuid();
@@ -42,7 +39,7 @@ export class CreateOrderAction {
             order.status = "PENDENTE";
             order.contactEmail = contactEmail;
             order.amount = parseFloat(amount);
-            
+
             const result = await this.orderRepository.save(order);
 
             return result;
