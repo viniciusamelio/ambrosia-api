@@ -1,6 +1,7 @@
-import {Entity, Column, PrimaryColumn, JoinColumn, ManyToOne} from "typeorm";
+import {Entity, Column, PrimaryColumn, JoinColumn, ManyToOne, OneToOne} from "typeorm";
 import { Address } from "./Address";
 import { User } from "./User";
+import { Payment } from "./Payment";
 
 @Entity()
 export class Order {
@@ -15,6 +16,11 @@ export class Order {
     @ManyToOne(type => User, user=>user.id)
     @JoinColumn()
     user: User;
+
+    @OneToOne(type=>Payment, payment=>payment.id)
+    @JoinColumn({name: "payment_id"})
+    payment: Payment;
+
 
     @Column({type: "longtext"})
     items : string;
