@@ -23,7 +23,7 @@ export class OrderRepository{
         try {
             return createConnection().then(async (connection) => {
                 const orderRepository = connection.getRepository(Order);
-                const order = await orderRepository.findOne({id: orderId});
+                const order = await orderRepository.findOne({relations:['user'],where: {id: orderId}});
                 connection.close();
                 return order;
             }).catch((error) => {

@@ -9,6 +9,8 @@ import { FindPaymentAction } from "../useCases/paymentUseCases/findPaymentAction
 import { FindByUserPaymentAction } from "../useCases/paymentUseCases/findByUserPaymentAction";
 import { FindByOrderPaymentAction } from "../useCases/paymentUseCases/findByOrderPaymentAction";
 import { DeletePaymentAction } from "../useCases/paymentUseCases/deletePaymentAction";
+import { PicPayService } from "../services/PicPayService";
+import { ReceivePicPayNotification } from "../useCases/paymentUseCases/receivePicPayNotification";
 
 const paymentRepository = new PaymentRepository();
 const paymentMethodRepository = new PaymentMethodRepository();
@@ -23,6 +25,7 @@ const findByUserPaymentAction = new FindByUserPaymentAction(paymentRepository);
 const findByOrderPaymentAction = new FindByOrderPaymentAction(paymentRepository);
 const deletePaymentAction = new DeletePaymentAction(paymentRepository);
 
+const receivePicPayNotification = new ReceivePicPayNotification();
 
 export class PaymentController{
     async create(req:Request, res: Response){
@@ -65,5 +68,10 @@ export class PaymentController{
         const result = await deletePaymentAction.index(req);
         if (result.error) return res.status(400).json({ error: result.error }).send();
         return res.status(200).json(result).send();
+    }
+
+    async receiveNotification(req:Request, res:Response){
+        await receivePicPayNotification.index(req);
+        return res.send();
     }
 }

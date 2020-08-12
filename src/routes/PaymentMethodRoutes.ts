@@ -6,14 +6,14 @@ const paymentMethodController = new PaymentMethodController();
 
 const PaymentMethodRouter = express.Router();
 
-PaymentMethodRouter.get('/paymentmethods/:id', paymentMethodController.find);
-PaymentMethodRouter.get('/paymentmethods', paymentMethodController.list);
+PaymentMethodRouter.get('/paymentmethod/:id', paymentMethodController.find);
+PaymentMethodRouter.get('/paymentmethod', paymentMethodController.list);
 
-PaymentMethodRouter.post('/paymentmethods', paymentMethodController.create);
+PaymentMethodRouter.post('/paymentmethod', paymentMethodController.create);
 
-PaymentMethodRouter.put('/paymentmethods', paymentMethodController.update);
+PaymentMethodRouter.put('/paymentmethod', paymentMethodController.update);
 
-PaymentMethodRouter.delete('/paymentmethods', paymentMethodController.delete);
+PaymentMethodRouter.delete('/paymentmethod', paymentMethodController.delete);
 
 
 export { PaymentMethodRouter };

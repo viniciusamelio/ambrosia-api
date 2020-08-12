@@ -19,7 +19,14 @@ export class Payment {
     @Column({length:20})
     status:string;
 
+
+    @Column({name: "payment_url,",nullable: true})
+    paymentUrl:string;
+
     @Column({type:'float'})
     amount:number;
+
+    @Column({name: "expires_at", nullable:true})
+    expiresAt:Date;
 
 }

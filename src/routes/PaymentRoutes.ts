@@ -12,6 +12,7 @@ PaymentRouter.get('/payment/:orderId',paymentController.findByOrder);
 PaymentRouter.get('/payment/:id',paymentController.find);
 
 PaymentRouter.post('/payment',paymentController.create);
+PaymentRouter.post('/payment/callback',paymentController.receiveNotification);
 
 PaymentRouter.put('/payment',paymentController.update);
 

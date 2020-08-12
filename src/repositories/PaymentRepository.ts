@@ -9,7 +9,7 @@ export class PaymentRepository {
             return createConnection().then(async (connection) => {
                 const paymentRepository = connection.getRepository(Payment);
                 await paymentRepository.save(payment);
-                const savedPayment = await paymentRepository.findOne({ id: payment.id });
+                const savedPayment = await paymentRepository.findOne({relations: ['paymentMethod','order'], where: { id: payment.id }});
                 connection.close();
                 return savedPayment;
             }).catch((error) => {
@@ -60,6 +60,22 @@ export class PaymentRepository {
                 const paymentList = await paymentRepository.find({ order: { user: { id: userId } } });
                 connection.close();
                 return paymentList;
+            }).catch((error) => {
+                getConnectionManager().get().close();
+                return error;
+            });
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async findByReferenceId(referenceId: string) {
+        try {
+            return createConnection().then(async (connection) => {
+                const paymentRepository = connection.getRepository(Payment);
+                const payment = await paymentRepository.findOne({relations:['order'], where:{order:{id:referenceId}} });
+                connection.close();
+                return payment;
             }).catch((error) => {
                 getConnectionManager().get().close();
                 return error;
