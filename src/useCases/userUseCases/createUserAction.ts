@@ -3,8 +3,9 @@ import {Request} from 'express';
 import { User } from "../../entity/User";
 const bcrypt = require('bcrypt');
 import { v4 as uuid } from 'uuid';
+import { MailService } from "../../services/MailService";
 class CreateUserAction{
-    constructor(private userRepository: UserRepository){}
+    constructor(private userRepository: UserRepository, private mailService: MailService){}
     
     async index(req:Request):Promise<any>{
         try {
@@ -20,6 +21,7 @@ class CreateUserAction{
             });
             user.id = uuid();
             const result = await this.userRepository.save(user);
+            this.mailService.sendWelcomeEmail(result.email,result.name);
             return result;
         } catch (error) {
             return {error:error.message};

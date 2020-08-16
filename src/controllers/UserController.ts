@@ -6,10 +6,13 @@ import { UpdateUserAction } from '../useCases/userUseCases/updateUserAction';
 import { UpdateUserAddressAction } from '../useCases/userUseCases/updateUserAddressAction';
 import { ChangeUserPasswordAction } from '../useCases/userUseCases/changePasswordAction';
 import { LoginUserAction } from '../useCases/userUseCases/loginUserAction';
+import { MailService } from '../services/MailService';
 
 const userRepository = new UserRepository();
+const mailService = new MailService();
 
-const createUserAction = new CreateUserAction(userRepository);
+
+const createUserAction = new CreateUserAction(userRepository,mailService);
 const createAddressAction = new CreateAddressAction(userRepository);
 const updateUserAction = new UpdateUserAction(userRepository);
 const updateAddressAction = new UpdateUserAddressAction(userRepository);
