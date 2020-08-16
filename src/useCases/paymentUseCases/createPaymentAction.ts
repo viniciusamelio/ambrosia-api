@@ -5,7 +5,8 @@ import { Payment } from '../../entity/Payment';
 import { PaymentRepository } from '../../repositories/PaymentRepository';
 import { OrderRepository } from '../../repositories/OrderRepository';
 import { isNullOrUndefined } from 'util';
-import { PicPayService, PicPayPayment, PicPayBuyer } from '../../services/PicPayService';
+import { PicPayService} from '../../services/PicPayService';
+import { picpayPaymentAction } from './picpayPaymentAction';
 
 
 export class CreatePaymentAction {
@@ -38,43 +39,7 @@ export class CreatePaymentAction {
             
             let result = await this.paymentRepository.save(payment);
 
-            if (result.paymentMethod.title.toLowerCase() == "picpay") {
-
-                const now = new Date();
-                var expireDate = new Date();
-                expireDate = new Date(expireDate.setHours(now.getHours()+3));
-
-
-                const order = await this.orderRepository.find(orderId);
-
-                const name = order.user.name.split(' ');
-
-                const paymentBuyer: PicPayBuyer = { firstName: name[0],
-                    lastName: name[name.length-1],
-                    document: cpf,
-                    phone: phone,
-                    email: email ?? order.user.email };
-
-                const paymentDto: PicPayPayment = { referenceId: result.order.id,
-                    callbackUrl: 'http://760a19130f06.ngrok.io/payment/callback',
-                    expiresAt: expireDate,
-                    value: parseFloat(amount),
-                    buyer: paymentBuyer };
-
-                const paymentResult = await this.picpayService.createPayment(paymentDto);
-
-                if(paymentResult.message){
-                    console.log(paymentResult);
-                    return {error: "Erro ao criar pagamento com PicPay"}
-                }
-
-                payment.paymentUrl = paymentResult.paymentUrl;
-                payment.expiresAt = paymentResult.expiresAt;
-
-                result = await this.paymentRepository.save(payment);
-            }
-
-            
+            if (result.paymentMethod.title.toLowerCase() == "picpay") result = await picpayPaymentAction(orderId, result, request);                                        
 
             return result;
         } catch (error) {

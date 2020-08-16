@@ -18,7 +18,7 @@ class LoginUserAction {
             const validPassword = await bcrypt.compare(password, user.password);
 
             if (validPassword) {
-                return { message: "Logado com sucesso" }
+                return { message: "Logado com sucesso", user:user }
             }
 
             return { warning: "Usuário e senha inválidos" }
