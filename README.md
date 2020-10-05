@@ -13,6 +13,8 @@ sua estrutura e funcionamento, é possível aplicá-lo até mesmo em e-commerces
 
 - Integração com PicPay;
 
+- Integração com LocationIQ, para geolocalização.
+
 ### Observações:
 
 - Tentei utilizar algumas boas práticas para desenvolver o projeto, alguns príncipios do SOLID, que podem ser vistos
